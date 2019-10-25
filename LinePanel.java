@@ -3,6 +3,9 @@
 
 import java.util.*;
 import java.awt.Color;
+// Ami Oka
+// This is LinePanel class that can add lines and draw it
+
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -13,10 +16,12 @@ public class LinePanel extends JPanel {
    
    private List<Line2D> lines;
    
+   // Constructs new LinePanel
    public LinePanel() {
       lines = new ArrayList<Line2D>();
    }
    
+   // Draws all lines in the line list
    public void paintComponent(Graphics g) {
       super.paintComponent(g);
       g.setColor(Color.BLACK);
@@ -26,6 +31,7 @@ public class LinePanel extends JPanel {
       }
    }
    
+   // Adds one line to the lines list
    public void addLine(Line2D line) {
       lines.add(line);
    }

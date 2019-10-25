@@ -12,35 +12,18 @@ public class Polygon {
    private double newlenFactor;
    private int n;
    
-   public static void main(String[] args) {
-      new Polygon();   
-   }
-   
    // Constructs a new hexagon hexagon with given number of layers
    // the given length of one side.
    // It draws from a point that makes the drawing in the center.
-   public Polygon() {
-      JFrame frame = new JFrame("Polygon");
-      frame.setSize(620, 580);
-      panel = new LinePanel();
-      frame.add(panel);
-      
-      Scanner console = new Scanner(System.in);
-      System.out.print("Polygon number: ");
-      n = console.nextInt();
+   public Polygon(LinePanel panel, int n, int layer, double length) {
+      this.panel = panel;
+      this.n = n;
       newlenFactor = 1.0 / (verticalLength() + 1) / 2.0;
-      System.out.print("Number of layer: ");
-      int layer = console.nextInt();
-      System.out.print("One side length: ");
-      double length = console.nextDouble();
+      
       double x = verticalLength() * length;
       double y = 0;
       
       drawPolygons(layer, length, x, y, 0);
-      frame.repaint();
-      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-      frame.setVisible(true);
-      panel.repaint();
    }
    
    // Draws n polygon with given number of layers left, and the
