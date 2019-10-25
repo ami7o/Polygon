@@ -13,7 +13,7 @@ public class LinePanel extends JPanel {
    
    private List<Line2D> lines;
    
-   public LinePanel(List<Line> line) {
+   public LinePanel() {
       lines = new ArrayList<Line2D>();
    }
    

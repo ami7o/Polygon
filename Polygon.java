@@ -7,8 +7,10 @@ import java.awt.geom.Line2D;
 
 public class Polygon {
    
+   public static final double CIRCLE_DEGREES = 360;
    private LinePanel panel;
-   public static final double CIRCLE_DEGREES = 300;
+   private double newlenFactor;
+   private int n;
    
    public static void main(String[] args) {
       new Polygon();   
@@ -20,23 +22,21 @@ public class Polygon {
    public Polygon() {
       JFrame frame = new JFrame("Polygon");
       frame.setSize(620, 580);
-      panel = new LinePanel(new ArrayList<Line>());
+      panel = new LinePanel();
       frame.add(panel);
       
       Scanner console = new Scanner(System.in);
       System.out.print("Polygon number: ");
-      int n = console.nextInt();
-      //int n = 7;
+      n = console.nextInt();
+      newlenFactor = 1.0 / (verticalLength() + 1) / 2.0;
       System.out.print("Number of layer: ");
       int layer = console.nextInt();
-      //int layer = 1;
       System.out.print("One side length: ");
       double length = console.nextDouble();
-      //double length = 200;
-      double x = cos(360 / n) * length;
+      double x = verticalLength() * length;
       double y = 0;
       
-      drawPolygons(n, layer, length, x, y, 0);
+      drawPolygons(layer, length, x, y, 0);
       frame.repaint();
       frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
       frame.setVisible(true);
@@ -45,20 +45,21 @@ public class Polygon {
    
    // Draws n polygon with given number of layers left, and the
    // given length of one side starting from the given x and y.
-   private void drawPolygons(int n, int layer, double length, double x, double y, double angle) {
+   private void drawPolygons(int layer, double length, double x, double y, double angle) {
       if (length <= 0 || layer < 0) {
          throw new IllegalArgumentException();
       }
       if (layer == 0) {
-         drawOnePolygon(n, length, x, y, angle);
+         drawOnePolygon(length, x, y, angle);
       } else {
          //drawOnePolygon(n, length, x, y, angle);
          
-         double height = length / 2 * tan(CIRCLE_DEGREES / 2 / n);
-         double newlen = height / sin(CIRCLE_DEGREES / n);
+         //double height = length / 2 * tan(CIRCLE_DEGREES / 2 / n);
+         //double newlen = height / sin(CIRCLE_DEGREES / n);
+         double newLen = length * newlenFactor;
 
          for (double i = 0; i < n; i++) {
-            drawPolygons(n, layer - 1, newlen, x, y, angle);
+            drawPolygons(layer - 1, newLen, x, y, angle);
             x += length * cos(angle);
             y += length * sin(angle);
             angle += CIRCLE_DEGREES / n;
@@ -68,15 +69,30 @@ public class Polygon {
    
    // Draws one given n polygon with the given length of one side starting
    // from the given x and y.
-   private void drawOnePolygon(int n, double length, double x, double y, double angle) {
+   private void drawOnePolygon(double length, double x, double y, double angle) {
       for (double i = 0; i < n; i++) {
-         double newx = x + length * cos(angle);
-         double newy = y + length * sin(angle);
-         panel.addLine(new Line2D.Double(x, y, newx, newy));
-         x = newx;
-         y = newy;
+         double newX = x + length * cos(angle);
+         double newY = y + length * sin(angle);
+         panel.addLine(new Line2D.Double(x, y, newX, newY));
+         x = newX;
+         y = newY;
          angle += CIRCLE_DEGREES / n;
       }
+   }
+   
+   // Finds the maximum vertical length of the polygon from the base line
+   private double verticalLength() {
+      double x = 0;
+      double y = 0;
+      double angle = 0;
+      double maxX = 0;
+      for (double i = 0; i < n; i++) {
+         maxX = Math.max(maxX, x);
+         x = x + cos(angle);
+         y = y + sin(angle);
+         angle += CIRCLE_DEGREES / n;
+      }
+      return maxX - 1;
    }
    
    // returns sine of given angle in degrees
