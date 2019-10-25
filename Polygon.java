@@ -8,6 +8,7 @@ import java.awt.geom.Line2D;
 public class Polygon {
    
    private LinePanel panel;
+   public static final double CIRCLE_DEGREES = 300;
    
    public static void main(String[] args) {
       new Polygon();   
@@ -51,15 +52,16 @@ public class Polygon {
       if (layer == 0) {
          drawOnePolygon(n, length, x, y, angle);
       } else {
-         drawOnePolygon(n, length, x, y, angle);
-         double height = length / 2 * tan(180.0 / n);
-         double newlen = height / sin(360.0 / n);
-         drawPolygons(n, layer - 1, newlen, x, y, angle);
+         //drawOnePolygon(n, length, x, y, angle);
+         
+         double height = length / 2 * tan(CIRCLE_DEGREES / 2 / n);
+         double newlen = height / sin(CIRCLE_DEGREES / n);
 
-         for (double i = 1; i < n; i++) {
-            x += length * cos((i - 1) * 360.0 / n + angle);
-            y += length * sin((i - 1) * 360.0 / n + angle);
-            drawPolygons(n, layer - 1, newlen, x, y, angle + i * 360 / n);
+         for (double i = 0; i < n; i++) {
+            drawPolygons(n, layer - 1, newlen, x, y, angle);
+            x += length * cos(angle);
+            y += length * sin(angle);
+            angle += CIRCLE_DEGREES / n;
          }   
       }
    }
@@ -68,11 +70,12 @@ public class Polygon {
    // from the given x and y.
    private void drawOnePolygon(int n, double length, double x, double y, double angle) {
       for (double i = 0; i < n; i++) {
-         double newx = x + length * cos(360.0 / n * i + angle);
-         double newy = y + length * sin(360.0 / n * i + angle);
+         double newx = x + length * cos(angle);
+         double newy = y + length * sin(angle);
          panel.addLine(new Line2D.Double(x, y, newx, newy));
          x = newx;
          y = newy;
+         angle += CIRCLE_DEGREES / n;
       }
    }
    
