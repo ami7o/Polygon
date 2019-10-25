@@ -1,5 +1,5 @@
 // Ami Oka
-// This program draws fractal hexagons using recursion
+// This program draws fractal polygons using recursion
 
 import java.util.*;
 import javax.swing.JFrame;
@@ -35,10 +35,6 @@ public class Polygon {
       if (layer == 0) {
          drawOnePolygon(length, x, y, angle);
       } else {
-         //drawOnePolygon(n, length, x, y, angle);
-         
-         //double height = length / 2 * tan(CIRCLE_DEGREES / 2 / n);
-         //double newlen = height / sin(CIRCLE_DEGREES / n);
          double newLen = length * newlenFactor;
 
          for (double i = 0; i < n; i++) {
